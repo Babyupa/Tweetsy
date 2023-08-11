@@ -20,6 +20,7 @@ import androidx.navigation.navArgument
 import com.example.tweetsy.api.TweetsyApi
 import com.example.tweetsy.screens.CategoryScreen
 import com.example.tweetsy.screens.DetailScreen
+import com.example.tweetsy.screens.LoginScreen
 import com.example.tweetsy.ui.theme.TweetsyTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -38,23 +39,33 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
     @Composable
     fun App(){
         val navController  = rememberNavController()
-        NavHost(navController = navController, startDestination = "category"){
+        NavHost(navController = navController, startDestination = "login"){
+            composable(route = "login"){
+                LoginScreen(navController)
+            }
             composable(route = "category"){
                 CategoryScreen {
                     navController.navigate("detail/${it}")
                 }
             }
             composable(route = "detail/{category}", arguments = listOf(
-                navArgument("category"){
+                navArgument("category") {
                     type = NavType.StringType
                 }
             )){
                 DetailScreen()
             }
         }
+    }
+
+    @Composable
+    @Preview
+    fun demo(){
+        App()
     }
 }
 
